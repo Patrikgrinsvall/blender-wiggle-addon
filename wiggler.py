@@ -19,11 +19,15 @@ def has_keyframe(ob, attr):
                 return len(fcu.keyframe_points) > 0
     return False 
 
+################################
+
 def find_modifier(fcu, type):   
     for modifier in fcu.modifiers:  
         if modifier.type == type:
             return modifier
     return None
+
+################################
 
 def wiggle(ob, context):
     scene = context.scene
@@ -48,9 +52,13 @@ def wiggle(ob, context):
             mod.influence = scene.wiggler_addon.influence_vector
     bpy.ops.transform.rotate(value = 0)
 
+################################
+
 def wiggle_selected_objects(context):
     for ob in context.selected_objects:
         wiggle(ob, context)
+
+################################
         
 def update_when_changed(self, context):
     wiggle_selected_objects(context)
@@ -65,6 +73,7 @@ class Wiggler_properties(bpy.types.PropertyGroup):
     influence_vector : bpy.props.FloatProperty(name= "Influence", update=update_when_changed, subtype= "FACTOR", soft_min= 0, soft_max= 1, default= 1.0)
  
 ################################
+
 class Wiggler_panel(bpy.types.Panel):
     bl_label = "Wiggle"
     bl_idname = "Wiggler_panel"
@@ -109,7 +118,7 @@ def unregister():
         except:
             print("Got exception when trying to unregister")
 
- 
- 
+################################
+# make it possible to run from script editor without loading as plugin
 if __name__ == "__main__":
     register()
